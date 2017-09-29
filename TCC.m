@@ -17,11 +17,13 @@ else
 end
 % End initialization code - DO NOT EDIT
 
-
 % --- Executes just before TCC is made visible.
 function TCC_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
+clc
+global ard
 
+ard=arduino();
 % Update handles structure
 guidata(hObject, handles);
 
@@ -220,7 +222,7 @@ end
 % --- Executes on button press in togglebutton1.
 function togglebutton1_Callback(hObject, eventdata, handles)
 global varSlider
-global ard
+
 while get(hObject,'Value')
 
     tic
@@ -245,4 +247,3 @@ function togglebutton1_ButtonDownFcn(hObject, eventdata, handles)
 
 
 function edit1_ButtonDownFcn(hObject, eventdata, handles)
-

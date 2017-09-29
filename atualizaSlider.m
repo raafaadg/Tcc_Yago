@@ -1,5 +1,6 @@
 global varSlider
 global varTheta
+global ard
 
 varSlider(1) = readVoltage(ard,'A7');
 varSlider(2) = readVoltage(ard,'A9');
