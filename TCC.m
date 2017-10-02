@@ -21,9 +21,14 @@ end
 function TCC_OpeningFcn(hObject, eventdata, handles, varargin)
 handles.output = hObject;
 clc
-global ard
+global com
 
-ard=arduino();
+com=comm;
+handles.timer = timer(...
+    'ExecutionMode', 'fixedRate', ...       % Run timer repeatedly.
+    'Period', .5, ...                        % Initial period is 1 sec.
+    'TimerFcn', {@atualizarslider,hObject}); % Specify callback function.
+
 % Update handles structure
 guidata(hObject, handles);
 
@@ -219,31 +224,72 @@ if ispc && isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgr
 end
 
 
-% --- Executes on button press in togglebutton1.
-function togglebutton1_Callback(hObject, eventdata, handles)
-global varSlider
+% --- Executes on button press in bt_arduino.
+function bt_arduino_Callback(hObject, eventdata, handles)
+global ard
 
-while get(hObject,'Value')
-
-    tic
-    atualizaSlider
-
-    vet=DH_Met(varSlider)
-    toc
-    pause(0.1);
-    
+if(~isempty(ard))
+    try
+        ard = arduino();
+    catch
+        warning('Arduino não conectado')
+    end
 end
+    
+guidata(hObject,handles);
 
  %disp(double(vet))
-% --- Executes on button press in pushbutton1.
-function pushbutton1_Callback(hObject, eventdata, handles)
-clear all
+% --- Executes on button press in bt_close.
+function bt_close_Callback(hObject, eventdata, handles)
+clear 
 close all
 
 
-% --- If Enable == 'on', executes on mouse press in 5 pixel border.
-% --- Otherwise, executes on mouse press in 5 pixel border or over togglebutton1.
-function togglebutton1_ButtonDownFcn(hObject, eventdata, handles)
+% --- Executes on button press in bt_comunica.
+function bt_comunica_Callback(hObject, eventdata, handles)
+% hObject    handle to bt_comunica (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global com
+if(isempty(com.hCom))
+    set(handles.bt_libera,'visible','on')
+    com=com.conecta;
+    try
+        fopen(com.hCom);
+    catch
+        warning('Erro ao abrir comunicação serial com o robo.')
+    end
+    if(isvalid(com.hCom))
+        disp('Porta Serial Conectada!')
+    end
+else
+    set(handles.bt_libera,'visible','off')
+end
+guidata(hObject,handles);
 
 
-function edit1_ButtonDownFcn(hObject, eventdata, handles)
+% --- Executes on button press in pushbutton5.
+function pushbutton5_Callback(hObject, eventdata, handles)
+% hObject    handle to pushbutton5 (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+
+
+% --- Executes on button press in bt_libera.
+function bt_libera_Callback(hObject, eventdata, handles)
+% hObject    handle to bt_libera (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)]
+
+if(get(hObject,'Value'))
+    start(handles.timer)
+else
+    stop(handles.timer)
+end
+% Hint: get(hObject,'Value') returns toggle state of bt_libera
+guidata(hObject, handles);
+
+function atualizarslider(hObject, eventdata, handles)
+atualizaSlider
+disp('oi')
+guidata(handles);

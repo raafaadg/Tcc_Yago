@@ -6,24 +6,30 @@ classdef comm
         envio
         resposta
         hCom
+        outputdata
         BufferEnvia
         BufferRecebe
-        TamResposta
-    end
+        TamResposta      
+    end    
     methods
+        function obj = set.outputdata(obj,val)
+           if ((val(1)<0)||(val(2)<0)||(val(3)<0)) 
+               warning('impossivel de assumir valores negativos')
+           end
+        end
         function obj = comm()
             obj.verifica=0;
             obj.envio = 'false';
         end
         function obj = conecta(obj)
             try
-                obj.hCom = serial(obj.NomePorta); %Conecta com a serial desejada
+                obj.hCom = serial(obj.NomePorta); %Estabelece conexão com a porta serial
             catch 
-                error('Erro ao abrir a porta serial.');
+                error('Erro ao estabelecer conexão com a porta.');
             end
-            disp('Dispositivo Conectado!')
+            disp('Porta Serial Conectada!')
             obj.verifica = 1;
-            obj.hCom.Timeout=2; %Seta o timeout tando da leitura como escrita
+            obj.hCom.Timeout = 2; %Seta o timeout tando da leitura como escrita
         end
         function obj = desconecta(obj)
             if(isvalid(obj.hCom))   %Se a porta existir
@@ -34,8 +40,8 @@ classdef comm
                 end
             end
         end
-        function obj = envia(obj,BufferEnvia)
-            obj.BufferEnvia = BufferEnvia;
+        function obj = envia(obj)
+            obj.BufferEnvia = obj.outputdata;
 %             BufferEnvia_bits = dec2bin(BufferEnvia); %Converte valores de x,y,z para bits
 %             BufferEnvia_bits = horzcat(BufferEnvia_bits(1,:),...
 %                 BufferEnvia_bits(2,:),BufferEnvia_bits(3,:)); %Ordena valores recebi
