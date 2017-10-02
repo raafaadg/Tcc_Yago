@@ -228,7 +228,7 @@ end
 function bt_arduino_Callback(hObject, eventdata, handles)
 global ard
 
-if(~isempty(ard))
+if(isempty(ard))
     try
         ard = arduino();
     catch
