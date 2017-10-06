@@ -129,12 +129,7 @@ end
 function bt_arduino_Callback(hObject, eventdata, handles)
 global com
 if(isempty(com.ard))
-    try
-        com.ard = arduino();
-        disp('Arduino Conectado')
-    catch
-        warning('Arduino não conectado')
-    end
+    com.ard=com.conectaArduino;
 end
     
 guidata(hObject,handles);
@@ -155,14 +150,6 @@ global com
 if(isempty(com.hCom))
     set(handles.bt_libera,'visible','on')
     com=com.conecta;
-    try
-        fopen(com.hCom);
-    catch
-        warning('Erro ao abrir comunicação serial com o robo.')
-    end
-    if(isvalid(com.hCom))
-        disp('Porta Serial Conectada!')
-    end
 else
     set(handles.bt_libera,'visible','off')
 end
@@ -191,9 +178,13 @@ end
 guidata(hObject, handles);
 
 function atualizarslider(hObject, eventdata, handles)
+global com
+com.comunica;
 atualizaSlider
+com.envia;
 
-
+% com.recebe
+com.descomunica;
 %   % set(handles.edit1,'String', varSlider(1));
 %    %set(handles.edit2,'String', varSlider(2));
 %    %set(handles.edit3,'String', varSlider(3));
