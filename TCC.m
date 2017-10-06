@@ -44,107 +44,8 @@ guidata(hObject,handles);
 %   end 
 %      
 % --- Executes on slider movement.
-function slider1_Callback(hObject, eventdata, handles)
-global varSlider
-varSlider(1) = get(hObject,'Value'); 
-
-atualizaSlider
-
-guidata(hObject,handles);
-
-% --- Executes during object creation, after setting all properties.
-function slider1_CreateFcn(hObject, eventdata, handles)
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
 
 
-% --- Executes on slider movement.
-function slider2_Callback(hObject, eventdata, handles)
-global varSlider
-varSlider(2) = get(hObject,'Value'); 
-atualizaSlider
-
-guidata(hObject,handles);
-
-
-% --- Executes during object creation, after setting all properties.
-function slider2_CreateFcn(hObject, eventdata, handles)
-
-% Hint: slider controls usually have a light gray background.
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-% --- Executes on slider movement.
-function slider3_Callback(hObject, eventdata, handles)
-global varSlider
-varSlider(3) = get(hObject,'Value'); 
-atualizaSlider
-
-guidata(hObject,handles);
-
-
-% --- Executes during object creation, after setting all properties.
-function slider3_CreateFcn(hObject, eventdata, handles)
-
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-% --- Executes on slider movement.
-function slider4_Callback(hObject, eventdata, handles)
-global varSlider
-varSlider(4) = get(hObject,'Value'); 
-atualizaSlider
-
-guidata(hObject,handles);
-
-
-function slider4_CreateFcn(hObject, eventdata, handles)
-
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-% --- Executes on slider movement.
-function slider5_Callback(hObject, eventdata, handles)
-global varSlider
-varSlider(5) = get(hObject,'Value'); 
-
-atualizaSlider
-
-guidata(hObject,handles);
-
-
-% --- Executes during object creation, after setting all properties.
-function slider5_CreateFcn(hObject, eventdata, handles)
-
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
-
-
-% --- Executes on slider movement.
-function slider6_Callback(hObject, eventdata, handles)
-global varSlider
-varSlider(6) = get(hObject,'Value'); 
-
-atualizaSlider
-
-guidata(hObject,handles);
-
-
-% --- Executes during object creation, after setting all properties.
-function slider6_CreateFcn(hObject, eventdata, handles)
-
-if isequal(get(hObject,'BackgroundColor'), get(0,'defaultUicontrolBackgroundColor'))
-    set(hObject,'BackgroundColor',[.9 .9 .9]);
-end
 
 function edit1_Callback(hObject, eventdata, handles)
 
@@ -226,11 +127,11 @@ end
 
 % --- Executes on button press in bt_arduino.
 function bt_arduino_Callback(hObject, eventdata, handles)
-global ard
-
-if(isempty(ard))
+global com
+if(isempty(com.ard))
     try
-        ard = arduino();
+        com.ard = arduino();
+        disp('Arduino Conectado')
     catch
         warning('Arduino não conectado')
     end
@@ -291,5 +192,13 @@ guidata(hObject, handles);
 
 function atualizarslider(hObject, eventdata, handles)
 atualizaSlider
-disp('oi')
+
+
+%   % set(handles.edit1,'String', varSlider(1));
+%    %set(handles.edit2,'String', varSlider(2));
+%    %set(handles.edit3,'String', varSlider(3));
+% %    set(handles.edit4,'String', varSlider(4));
+%    set(handles.edit5,'String', varSlider(5));
+%    set(handles.edit6,'String', varSlider(6));
+
 guidata(handles);

@@ -1,6 +1,6 @@
 function z = DH_Met(theta)
 %%% DENAVIT HARTENBERG%%%%%%%%%%
-clc
+
 F=[[300 700 185 0 0 0]',[600 0 0 830 0 120]',...
     [90 0 0 0 0 0]',ceil((theta(:).*42.8572)-21.4286)];  
 B=eye(4);
