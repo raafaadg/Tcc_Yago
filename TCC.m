@@ -45,8 +45,6 @@ guidata(hObject,handles);
 %      
 % --- Executes on slider movement.
 
-
-
 function edit1_Callback(hObject, eventdata, handles)
 
 % --- Executes during object creation, after setting all properties.
@@ -168,16 +166,6 @@ function bt_libera_Callback(hObject, eventdata, handles)
 % hObject    handle to bt_libera (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)]
-
-if(get(hObject,'Value'))
-    start(handles.timer)
-else
-    stop(handles.timer)
-end
-% Hint: get(hObject,'Value') returns toggle state of bt_libera
-guidata(hObject, handles);
-
-function atualizarslider(hObject, eventdata, handles)
 global com
 com.comunica;
 atualizaSlider
@@ -185,11 +173,38 @@ com.envia;
 
 % com.recebe
 com.descomunica;
-%   % set(handles.edit1,'String', varSlider(1));
-%    %set(handles.edit2,'String', varSlider(2));
-%    %set(handles.edit3,'String', varSlider(3));
-% %    set(handles.edit4,'String', varSlider(4));
+if(com.FlagResposta == false)
+    com.FlagResposta = true;
+    start(handles.timer)
+else
+    warning('Aguardadno resposta na serial')
+end
+
+% Hint: get(hObject,'Value') returns toggle state of bt_libera
+guidata(hObject, handles);
+
+function atualizarslider(hObject, eventdata, handles)
+global com
+
+com.recebe;
+disp(com.BufferRecebe)
+if(srtcmp(com.BufferRecebe,'AGRT') || srtcmp(com.BufferRecebe,'G') || srtcmp(com.BufferRecebe,'OK'))
+    stop(handles.timer)
+    com.FlagResposta = false;
+end
+%    set(handles.edit1,'String', varSlider(1));
+%    set(handles.edit2,'String', varSlider(2));
+%    set(handles.edit3,'String', varSlider(3));
+%    set(handles.edit4,'String', varSlider(4));
 %    set(handles.edit5,'String', varSlider(5));
 %    set(handles.edit6,'String', varSlider(6));
 
 guidata(handles);
+
+
+% --- If Enable == 'on', executes on mouse press in 5 pixel border.
+% --- Otherwise, executes on mouse press in 5 pixel border or over bt_libera.
+function bt_libera_ButtonDownFcn(hObject, eventdata, handles)
+% hObject    handle to bt_libera (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)

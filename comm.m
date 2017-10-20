@@ -13,6 +13,7 @@ classdef comm
         ard
         varSlider
         varTheta
+        FlagResposta = false;
     end    
     methods
        % function obj = set.outputdata(obj,val)
