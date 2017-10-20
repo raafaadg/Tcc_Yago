@@ -168,6 +168,9 @@ function bt_libera_Callback(hObject, eventdata, handles)
 % handles    structure with handles and user data (see GUIDATA)]
 global com
 com.comunica;
+com.outputdata = 'c';
+com.evia;
+pause(1);
 atualizaSlider
 com.envia;
 
@@ -201,10 +204,31 @@ end
 
 guidata(handles);
 
-
-% --- If Enable == 'on', executes on mouse press in 5 pixel border.
-% --- Otherwise, executes on mouse press in 5 pixel border or over bt_libera.
-function bt_libera_ButtonDownFcn(hObject, eventdata, handles)
-% hObject    handle to bt_libera (see GCBO)
+% --- Executes on button press in bt_garra.
+function bt_garra_Callback(hObject, eventdata, handles)
+% hObject    handle to bt_garra (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
+global com
+
+com.outputdata = 'a';
+com.conecta
+com.envia
+com.desconecta
+
+guidata(hObject, handles);
+
+
+% --- Executes on button press in bt_origem.
+function bt_origem_Callback(hObject, eventdata, handles)
+% hObject    handle to bt_origem (see GCBO)
+% eventdata  reserved - to be defined in a future version of MATLAB
+% handles    structure with handles and user data (see GUIDATA)
+global com
+
+com.outputdata = 'c';
+com.conecta
+com.envia
+com.desconecta
+
+guidata(hObject, handles);
