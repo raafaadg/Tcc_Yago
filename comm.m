@@ -28,12 +28,13 @@ classdef comm
         function obj = conecta(obj)
             try
                 obj.hCom = serial(obj.NomePorta); %Estabelece conexão com a porta serial
+                disp('Porta Serial Conectada!')
+                obj.verifica = 1;
+                obj.hCom.Timeout = 2;
             catch 
                 warning('Erro ao estabelecer conexão com a porta.');
             end
-            disp('Porta Serial Conectada!')
-            obj.verifica = 1;
-            obj.hCom.Timeout = 2; %Seta o timeout tando da leitura como escrita
+          %Seta o timeout tando da leitura como escrita
         end
         function obj = desconecta(obj)
             if(isvalid(obj.hCom))   %Se a porta existir
@@ -46,12 +47,12 @@ classdef comm
         end
         function obj = comunica(obj)
             try
-                fopen(obj.hCom);
+                fopen(obj.hCom); 
+                if(isvalid(obj.hCom))
+                    disp('Porta Serial Conectada!')
+                end
             catch
                 warning('Erro ao abrir comunicação serial com o robo.')
-            end
-            if(isvalid(com.hCom))
-                disp('Porta Serial Conectada!')
             end
         end
         function obj = descomunica(obj)
@@ -75,8 +76,8 @@ classdef comm
 %             BufferEnvia_bits = horzcat(BufferEnvia_bits(1,:),...
 %                 BufferEnvia_bits(2,:),BufferEnvia_bits(3,:)); %Ordena valores recebi
             try
-                fprintf(obj.hCom,'%s',obj.BufferEnvia);
-%             fwrite(obj,obj.BufferEnvia);    %Envia informação em string             
+               % fprintf(obj.hCom,'%s',obj.BufferEnvia);
+             fwrite(obj,obj.BufferEnvia);    %Envia informação em string             
 %             fwrite(obj,BufferEnvia_bits); %Envia informação em bits
             catch
                 warning('Erro ao enviar Arquivo');
