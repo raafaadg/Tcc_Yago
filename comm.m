@@ -1,6 +1,6 @@
 classdef comm
     properties
-        NomePorta = 'COM1';
+        NomePorta = 'COM2';
         BytesLidos = 0;
         verifica
         envio
@@ -47,12 +47,13 @@ classdef comm
         function obj = comunica(obj)
             try
                 fopen(obj.hCom);
+                if(isvalid(obj.hCom))
+                    disp('Porta Serial Conectada!')
+                end
             catch
                 warning('Erro ao abrir comunicação serial com o robo.')
             end
-            if(isvalid(com.hCom))
-                disp('Porta Serial Conectada!')
-            end
+            
         end
         function obj = descomunica(obj)
             try
@@ -71,31 +72,33 @@ classdef comm
         end
         function obj = envia(obj)
             obj.BufferEnvia = num2str(obj.outputdata');
-%             BufferEnvia_bits = dec2bin(BufferEnvia); %Converte valores de x,y,z para bits
-%             BufferEnvia_bits = horzcat(BufferEnvia_bits(1,:),...
-%                 BufferEnvia_bits(2,:),BufferEnvia_bits(3,:)); %Ordena valores recebi
             try
                 fprintf(obj.hCom,'%s',obj.BufferEnvia);
-%             fwrite(obj,obj.BufferEnvia);    %Envia informação em string             
-%             fwrite(obj,BufferEnvia_bits); %Envia informação em bits
             catch
                 warning('Erro ao enviar Arquivo');
             end
             obj.envio = true;           
         end
         function obj = recebe(obj)
+            if (strcmp(obj.hCom.Status, 'closed'))
+                 obj.comunica;
+            end
             try
-                [BufferRecebe_aux, TamResposta_aux] = fread(obj.hCom);
+                [BufferRecebe_aux, TamResposta_aux] = fscanf(obj.hCom);
+                if(size(BufferRecebe_aux)>0)
+                obj.BufferRecebe = char(BufferRecebe_aux);
+                obj.TamResposta = TamResposta_aux;
+                obj.resposta = 1;
+                end
+                if(size(BufferRecebe_aux)<0)
+                    obj.resposta = 0;
+                end
             catch
                 warning('Erro ao receber mensagem');
             end
-            if(size(BufferRecebe_aux)>0)
-                obj.BufferRecebe = BufferRecebe_aux;
-                obj.TamResposta = TamResposta_aux;
-                obj.resposta = 1;
-            end
-            if(size(BufferRecebe_aux)<0)
-                obj.resposta = 0;
+            
+            if (strcmp(obj.hCom.Status, 'open'))
+                 obj.descomunica;
             end
         end
     end

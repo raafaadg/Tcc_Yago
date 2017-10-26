@@ -167,20 +167,21 @@ function bt_libera_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)]
 global com
-com.comunica;
-com.outputdata = 'c';
-com.evia;
-pause(1);
-atualizaSlider
-com.envia;
 
-% com.recebe
-com.descomunica;
+
+% com.descomunica;
 if(com.FlagResposta == false)
+    if (strcmp(com.hCom.Status, 'closed'))
+        com.comunica;
+    end
+    % atualizaSlider
+    com.outputdata = 'ogay';
+    com=com.envia;
     com.FlagResposta = true;
     start(handles.timer)
+    disp('Timer Ativado')
 else
-    warning('Aguardadno resposta na serial')
+    warning('aguardando resposta na serial')
 end
 
 % Hint: get(hObject,'Value') returns toggle state of bt_libera
@@ -189,11 +190,14 @@ guidata(hObject, handles);
 function atualizarslider(hObject, eventdata, handles)
 global com
 
-com.recebe;
-disp(com.BufferRecebe)
-if(srtcmp(com.BufferRecebe,'AGRT') || srtcmp(com.BufferRecebe,'G') || srtcmp(com.BufferRecebe,'OK'))
-    stop(handles.timer)
-    com.FlagResposta = false;
+if(com.hCom.BytesAvailable>0)
+    com=com.recebe;
+    disp(com.BufferRecebe)
+    if(strcmp(com.BufferRecebe,'AGRT') || strcmp(com.BufferRecebe,'G') || strcmp(com.BufferRecebe,'OK'))
+        stop(hObject)
+        com.FlagResposta = false;
+        com.descomunica;
+    end
 end
 %    set(handles.edit1,'String', varSlider(1));
 %    set(handles.edit2,'String', varSlider(2));
@@ -212,9 +216,11 @@ function bt_garra_Callback(hObject, eventdata, handles)
 global com
 
 com.outputdata = 'a';
-com.conecta
-com.envia
-com.desconecta
+if (strcmp(com.hCom.Status, 'closed'))
+    com=com.comunica;
+end
+com=com.envia;
+com=com.descomunica;
 
 guidata(hObject, handles);
 
@@ -227,8 +233,10 @@ function bt_origem_Callback(hObject, eventdata, handles)
 global com
 
 com.outputdata = 'c';
-com.conecta
-com.envia
-com.desconecta
+if (strcmp(com.hCom.Status, 'close'))
+    com=com.comunica;
+end
+com=com.envia;
+com=com.descomunica;
 
 guidata(hObject, handles);
