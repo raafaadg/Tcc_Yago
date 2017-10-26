@@ -174,8 +174,8 @@ if(com.FlagResposta == false)
     if (strcmp(com.hCom.Status, 'closed'))
         com.comunica;
     end
-    % atualizaSlider
-    com.outputdata = 'ogay';
+    atualizaSlider
+%     com.outputdata = 'ogay';
     com=com.envia;
     com.FlagResposta = true;
     start(handles.timer)
