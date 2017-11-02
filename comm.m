@@ -1,6 +1,6 @@
 classdef comm
     properties
-        NomePorta = 'COM2';
+        NomePorta = 'COM4';
         BytesLidos = 0;
         verifica
         envio
@@ -48,7 +48,7 @@ classdef comm
             try
                 fopen(obj.hCom);
                 if(isvalid(obj.hCom))
-                    disp('Porta Serial Conectada!')
+                    disp('Porta Serial Conectada!');
                 end
             catch
                 warning('Erro ao abrir comunicação serial com o robo.')
@@ -71,9 +71,9 @@ classdef comm
             end
         end
         function obj = envia(obj)
-            obj.BufferEnvia = num2str(obj.outputdata');
+%             obj.BufferEnvia = num2str(obj.outputdata');
             try
-                fprintf(obj.hCom,'%s',obj.BufferEnvia);
+                fprintf(obj.hCom,obj.outputdata);
             catch
                 warning('Erro ao enviar Arquivo');
             end

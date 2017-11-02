@@ -14,5 +14,5 @@ for i=1:size(F,2)
 end
 R=B(1:3,1:3);
 d=B(1:3,4);
-z=R*d; 
+z=d; 
 end

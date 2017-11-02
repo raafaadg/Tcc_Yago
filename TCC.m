@@ -135,7 +135,9 @@ guidata(hObject,handles);
  %disp(double(vet))
 % --- Executes on button press in bt_close.
 function bt_close_Callback(hObject, eventdata, handles)
-clear 
+global com
+ com.descomunica;
+ clear 
 close all
 
 
@@ -148,6 +150,7 @@ global com
 if(isempty(com.hCom))
     set(handles.bt_libera,'visible','on')
     com=com.conecta;
+    com.comunica; 
 else
     set(handles.bt_libera,'visible','off')
 end
@@ -167,24 +170,24 @@ function bt_libera_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)]
 global com
-
-
-% com.descomunica;
 if(com.FlagResposta == false)
-    if (strcmp(com.hCom.Status, 'closed'))
+    if (strcmp(com.hCom.Status,'closed'))
         com.comunica;
+        disp(' merda')
     end
-    atualizaSlider
-%     com.outputdata = 'ogay';
-    com=com.envia;
-    com.FlagResposta = true;
-    start(handles.timer)
-    disp('Timer Ativado')
+        atualizaSlider
+        com.comunica;
+        com=com.envia;
+       com.FlagResposta = true;
+         start(handles.timer)
+         disp('Funciona')
+             disp('Timer Ativado')
+   
 else
     warning('aguardando resposta na serial')
 end
 
-% Hint: get(hObject,'Value') returns toggle state of bt_libera
+%Hint: get(hObject,'Value') returns toggle state of bt_libera
 guidata(hObject, handles);
 
 function atualizarslider(hObject, eventdata, handles)
@@ -193,7 +196,7 @@ global com
 if(com.hCom.BytesAvailable>0)
     com=com.recebe;
     disp(com.BufferRecebe)
-    if(strcmp(com.BufferRecebe,'AGRT') || strcmp(com.BufferRecebe,'G') || strcmp(com.BufferRecebe,'OK'))
+    if(strcmp(com.BufferRecebe,'T') || strcmp(com.BufferRecebe,'G') || strcmp(com.BufferRecebe,'OK'))
         stop(hObject)
         com.FlagResposta = false;
         com.descomunica;
@@ -214,16 +217,13 @@ function bt_garra_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global com
-
-com.outputdata = 'a';
-if (strcmp(com.hCom.Status, 'closed'))
-    com=com.comunica;
-end
+   if (strcmp(com.hCom.Status, 'closed'))
+      com=com.comunica;
+   end 
 com=com.envia;
+com.outputdata = 'b';
 com=com.descomunica;
-
 guidata(hObject, handles);
-
 
 % --- Executes on button press in bt_origem.
 function bt_origem_Callback(hObject, eventdata, handles)
@@ -231,12 +231,11 @@ function bt_origem_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 global com
-
-com.outputdata = 'c';
-if (strcmp(com.hCom.Status, 'close'))
+if (strcmp(com.hCom.Status, 'closed'))
     com=com.comunica;
 end
 com=com.envia;
+com.outputdata ='c';
 com=com.descomunica;
 
 guidata(hObject, handles);
