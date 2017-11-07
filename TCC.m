@@ -153,7 +153,15 @@ if(isempty(com.hCom))
     set(handles.bt_libera,'visible','on')
     com=com.conecta;
     com.comunica; 
+    com.outputdata = 'i';
+    com=com.envia;
+    com.FlagResposta = true;
+    start(handles.timer)
+    disp('Timer Ativado')
+    
 else
+    com=com.desconecta;
+    com.descomunica;
     set(handles.bt_libera,'visible','off')
 end
 guidata(hObject,handles);
@@ -175,11 +183,10 @@ global com
 if(com.FlagResposta == false)
     if (strcmp(com.hCom.Status,'closed'))
         com.comunica;
-        disp(' merda')
     end
-        atualizaSlider
-        com.comunica;
+        com.outputdata = 'e';
         com=com.envia;
+        atualizaSlider
         com.FlagResposta = true;
         start(handles.timer)
         disp('Timer Ativado')
@@ -201,14 +208,23 @@ if(com.hCom.BytesAvailable>0)
         com.FlagResposta = false;
         com.descomunica;
         disp('Timer Desativado')
+    elseif (strcmp(com.BufferRecebe,'AGTR'))
+        if (strcmp(com.hCom.Status,'closed'))
+            com.comunica;
+        end
+        com.envia;
+        stop(hObject)
+        com.FlagResposta = false;
+        com.descomunica;
+        disp('Timer Desativado')
+    else 
+        stop(hObject)
+        com.FlagResposta = false;
+        com.descomunica;
+        disp('Timer Desativado e Algo exótico recebido')
     end
+    
 end
-%    set(handles.edit1,'String', varSlider(1));
-%    set(handles.edit2,'String', varSlider(2));
-%    set(handles.edit3,'String', varSlider(3));
-%    set(handles.edit4,'String', varSlider(4));
-%    set(handles.edit5,'String', varSlider(5));
-%    set(handles.edit6,'String', varSlider(6));
 
 guidata(handles);
 
@@ -222,7 +238,7 @@ global com
       com=com.comunica;
    end 
    if(com.FlagResposta == false)
-        com.outputdata = 'b';
+        com.outputdata = 'a';
         com=com.envia;
         com.FlagResposta = true;
         start(handles.timer)

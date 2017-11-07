@@ -1,6 +1,6 @@
 classdef comm
     properties
-        NomePorta = 'COM8';
+        NomePorta = 'COM12';
         BytesLidos = 0;
         verifica
         envio
@@ -58,6 +58,7 @@ classdef comm
         function obj = descomunica(obj)
             try
                 fclose(obj.hCom);
+                disp('Porta Serial - Comunicação Fechada!');
             catch
                 warning('Erro ao fechar comunicação serial com o robo.')
             end
@@ -73,7 +74,8 @@ classdef comm
         function obj = envia(obj)
             obj.BufferEnvia = obj.outputdata;
             if isnumeric(obj.BufferEnvia)
-             obj.BufferEnvia = ['<' num2str(obj.outputdata') '>'];
+             obj.BufferEnvia = ['<' num2str(obj.outputdata(1)) ','...
+                 num2str(obj.outputdata(2)) ',' num2str(obj.outputdata(3)) '>'];
             end
             try
                 fprintf(obj.hCom,obj.BufferEnvia);
