@@ -26,7 +26,7 @@ if(~isempty(com.ard))
     R=SerialLink(D,'name','Robo COMAU TCC');
 
     R.plot([com.varTheta(1) com.varTheta(2) com.varTheta(3) com.varTheta(4) com.varTheta(5) com.varTheta(6)])
-    com.outputdata=DH_Met(com.varSlider);
+    com.outputdata = DH_Met(com.varSlider);
     
     disp(com.outputdata);
     disp(com.varSlider);

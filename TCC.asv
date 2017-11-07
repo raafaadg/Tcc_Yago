@@ -224,9 +224,8 @@ global com
    if(com.FlagResposta == false)
         com.outputdata = 'b';
         com=com.envia;
-        com.FlagResposta = true;
-        start(handles.timer)
-        disp('Timer Ativado')
+        com=com.descomunica;
+        
    else
     warning('aguardando resposta na serial')
    end
@@ -241,13 +240,8 @@ global com
 if (strcmp(com.hCom.Status, 'closed'))
     com=com.comunica;
 end
-if(com.FlagResposta == false)
-    com.outputdata ='c';
-    com=com.envia;
-    com.FlagResposta = true;
-    start(handles.timer)
-    disp('Timer Ativado')
-else
-    warning('aguardando resposta na serial')
-end
+com.outputdata ='c';
+com=com.envia;
+com=com.descomunica;
+
 guidata(hObject, handles);

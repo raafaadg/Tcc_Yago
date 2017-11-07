@@ -1,6 +1,6 @@
 classdef comm
     properties
-        NomePorta = 'COM4';
+        NomePorta = 'COM8';
         BytesLidos = 0;
         verifica
         envio
@@ -48,7 +48,7 @@ classdef comm
             try
                 fopen(obj.hCom);
                 if(isvalid(obj.hCom))
-                    disp('Porta Serial Conectada!');
+                    disp('Porta Serial - Comunicação aberta!');
                 end
             catch
                 warning('Erro ao abrir comunicação serial com o robo.')
@@ -64,16 +64,19 @@ classdef comm
         end
         function obj = conectaArduino(obj)
             try
-                obj.ard = arduino();
+                obj.ard = arduino;
                 disp('Arduino Conectado')
             catch 
                 warning('Erro ao conectar com o Arduino ');
             end
         end
         function obj = envia(obj)
-%             obj.BufferEnvia = num2str(obj.outputdata');
+            obj.BufferEnvia = obj.outputdata;
+            if isnumeric(obj.BufferEnvia)
+             obj.BufferEnvia = ['<' num2str(obj.outputdata') '>'];
+            end
             try
-                fprintf(obj.hCom,obj.outputdata);
+                fprintf(obj.hCom,obj.BufferEnvia);
             catch
                 warning('Erro ao enviar Arquivo');
             end
