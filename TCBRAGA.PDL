@@ -1,0 +1,128 @@
+PROGRAM TCBraga EZ, PROG_ARM = 1, STACK = 2048
+VAR pnt0002p : POSITION
+  pnt0001p, pnt0003p : POSITION
+  i : INTEGER
+  handle : INTEGER
+  v : VECTOR
+  s : STRING[3]
+  t : INTEGER
+CONST 
+  robo_abrir_garra=20
+  robo_fechar_garra=18  
+
+ROUTINE abrir_garra EXPORTED FROM tcbraga
+ROUTINE mover EXPORTED FROM tcbraga
+ROUTINE teste_garra EXPORTED FROM tcbraga
+ROUTINE fechar_garra EXPORTED FROM tcbraga
+ROUTINE comunicacao EXPORTED FROM tcbraga
+ROUTINE origem EXPORTED FROM tcbraga
+  
+  --SubRotina de inicialização
+  
+  --Subrotina abre garra
+ROUTINE abrir_garra
+BEGIN
+  DELAY 150
+  $DOUT [robo_abrir_garra]:=ON
+  DELAY 150
+  $DOUT [robo_abrir_garra]:=OFF
+END abrir_garra
+  
+  --SubRotina fechar garra
+ROUTINE fechar_garra
+BEGIN
+  DELAY 150
+  $DOUT [robo_fechar_garra]:=ON
+  DELAY 150
+  $DOUT [robo_fechar_garra]:=OFF
+END fechar_garra
+  
+  --SubRotina Teste da garra 
+ROUTINE teste_garra
+  
+BEGIN
+  FOR i := 1 TO 4 DO
+    fechar_garra
+    abrir_garra
+  ENDFOR
+   OPEN FILE handle ('COM1:', 'RW')
+   WRITE handle('G')
+   CLOSE FILE handle
+END teste_garra
+  
+  -- SubRotina movimentacao do robo para origem
+ROUTINE origem
+BEGIN
+  $ARM_OVR := 100
+  $ARM_SPD_OVR := 60   --Atribui uma substituição da velocidade do braço que não afeta a aceleração e a desaceleração 
+  $ARM_ACC_OVR := 60
+  $ARM_DEC_OVR := 60
+  MOVE JOINT TO pnt0001p
+ OPEN FILE handle ('COM1:', 'RW')
+    WRITE handle('G')
+   CLOSE FILE handle
+  END origem
+  
+  --SubRotina de movimentacao do robo
+ROUTINE mover
+BEGIN
+      
+  OPEN FILE handle ('COM1:', 'RW')
+  WRITE handle('AGTR')
+  READ handle (v)
+  WRITE handle(v)
+  pnt0002p.X := pnt0003p.X - v.X
+  pnt0002p.Y := pnt0003p.Y - v.Y
+  pnt0002p.Z := pnt0003p.Z - v.Z
+  MOVE JOINT TO pnt0002p WITH $ARM_SPD_OVR = 40
+ 
+   WRITE handle ('OK')
+
+  CLOSE FILE handle
+  t := 2
+END mover
+  
+  --Abrir a comunicação 
+ROUTINE comunicacao
+BEGIN
+  OPEN FILE handle ('COM1:', 'rw')
+   READ handle (s)
+  CLOSE FILE handle
+
+  IF (s >= 'a') AND (s < 'b') THEN
+    teste_garra
+ 	
+  ENDIF
+  
+  IF (s >= 'c') AND (s < 'd') THEN
+    origem
+ 	
+  ENDIF
+  IF (s >= 'e') AND (s < 'f') THEN
+    mover
+   ENDIF
+
+END comunicacao
+  
+  --PROGRAMA PRINCIPAL 
+BEGIN
+inicio::  
+  t := 0
+  OPEN FILE handle ('COM1:', 'rw')
+  READ handle (s)
+    
+  IF (s >= 'i') AND (s < 'j') THEN
+	WRITE handle ('OK')
+  	CLOSE FILE handle
+	ex::  comunicacao
+  
+  ENDIF
+    IF t >= 2 THEN
+    CLOSE FILE handle
+    GOTO inicio
+  ELSE
+    GOTO ex
+  ENDIF
+  mover
+  
+END TCBraga
