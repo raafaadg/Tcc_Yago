@@ -1,5 +1,5 @@
 --
--- File TCBRAGA.VAR   Fri Oct 20 20:30:08 2017
+-- File TCBRAGA.VAR   Fri Nov 10 21:02:14 2017
 -- SW Version 5.21
 --
 --$$   ARM: 1 AXES: 6 AUX:0 MASK: 63
@@ -10,4 +10,8 @@ pnt0001p POS  Priv
 
 pnt0002p POS  Priv  
  X:  45.22 Y: 831.81 Z:1522.39 A:  94.00 E: 168.25 R:  43.96
- CNFG: 'T2:1'
+ CNFG: ''
+
+pnt0003p POS  Priv  
+ X:  45.22 Y: 831.81 Z:1522.39 A:  94.00 E: 168.25 R:  43.96
+ CNFG: ''

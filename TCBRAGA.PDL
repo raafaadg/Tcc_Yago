@@ -9,6 +9,7 @@ VAR pnt0002p : POSITION
 CONST 
   robo_abrir_garra=20
   robo_fechar_garra=18  
+  
 
 ROUTINE abrir_garra EXPORTED FROM tcbraga
 ROUTINE mover EXPORTED FROM tcbraga
@@ -71,6 +72,7 @@ BEGIN
   WRITE handle('AGTR')
   READ handle (v)
   WRITE handle(v)
+  pnt0003p := pnt0002p
   pnt0002p.X := pnt0003p.X - v.X
   pnt0002p.Y := pnt0003p.Y - v.Y
   pnt0002p.Z := pnt0003p.Z - v.Z
@@ -108,6 +110,7 @@ END comunicacao
 BEGIN
 inicio::  
   t := 0
+  v := VEC(0,0,0)
   OPEN FILE handle ('COM1:', 'rw')
   READ handle (s)
     
