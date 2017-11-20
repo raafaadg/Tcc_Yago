@@ -16,11 +16,23 @@ classdef comm
         FlagResposta = false;
     end    
     methods
-       % function obj = set.outputdata(obj,val)
-        %   if ((val(1)<0)||(val(2)<0)||(val(3)<0)) 
-         %      warning('impossivel de assumir valores negativos')
-          % end
-        %end
+       function obj = set.outputdata(obj,val)
+           switch val
+               case val(1)>0
+                   obj.outputdata(1) = 0;
+               case val(1)<0
+                   obj.outputdata(1) = 0;
+               case val(2)<0
+                   obj.outputdata(2) = 0;
+               case val(2)>0
+                   obj.outputdata(2) = 0;
+               case val(3)>0
+                   obj.outputdata(3) = 0;
+               case val(3)<0
+                   obj.outputdata(3) = 0;
+               otherwise
+                   warning('Valores Válidos')
+           end
         function obj = comm()
             obj.verifica=0;
             obj.envio = 'false';
