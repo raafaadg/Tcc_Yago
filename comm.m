@@ -19,21 +19,33 @@ classdef comm
        function obj = set.outputdata(obj,val)
            valores_max=[100 100 100]; %Valores máximos de x,y e z
            valores_min=[0 0 0]; %Valores minímos de x,y e z
-           switch val
-               case val(1)>valores_max(1)
-                   obj.outputdata(1) = valores_max(1);
-               case val(1)<valores_min(1)
-                   obj.outputdata(1) = valores_min(1);
-               case val(2)>valores_max(2)
-                   obj.outputdata(2) = valores_max(2);
-               case val(2)<valores_min(2)
-                   obj.outputdata(2) = valores_min(2);
-               case val(3)>valores_max(3)
-                   obj.outputdata(3) = valores_max(3);
-               case val(3)<valores_min(3)
-                   obj.outputdata(3) = valores_min(3);
-               otherwise
-                   warning('Valores Válidos')
+           if ischar(val)
+               obj.outputdata = val;
+           else
+               switch val(1)
+                   case val(1)>valores_max(1)
+                       obj.outputdata(1) = valores_max(1);
+                   case val(1)<valores_min(1)
+                       obj.outputdata(1) = valores_min(1);
+                   otherwise
+                       obj.outputdata(1) = val(1);
+               end
+               switch val(2)
+                   case val(2)>valores_max(2)
+                       obj.outputdata(2) = valores_max(2);
+                   case val(2)<valores_min(2)
+                       obj.outputdata(2) = valores_min(2);
+                   otherwise
+                       obj.outputdata(2) = val(2);
+               end
+               switch val(3)
+                   case val(3)>valores_max(3)
+                       obj.outputdata(3) = valores_max(3);
+                   case val(3)<valores_min(3)
+                       obj.outputdata(3) = valores_min(3);
+                   otherwise
+                       obj.outputdata(3) = val(3);
+               end
            end
        end
         function obj = comm()
